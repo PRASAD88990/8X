@@ -77,6 +77,7 @@ def main():
     st.title("Hotel Suggestions Based on Location")
     lat = st.number_input("Enter Latitude", value=36.1699)
     lon = st.number_input("Enter Longitude", value=-115.1398)
+    lon= -lon
     radius_km = st.slider("Search Radius (km)", 1, 20, 10)
     st.title("Restaurant Finder by Cuisine")
     cuisine_type = st.text_input("Enter Cuisine Type", "Italian")
