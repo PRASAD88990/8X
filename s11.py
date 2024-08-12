@@ -51,9 +51,17 @@ def create_pydeck_map(restaurants, center_lat, center_lon):
         get_radius=200,
         pickable=True,
     )
+    my_location_layer = pdk.Layer(
+        "ScatterplotLayer",
+        data=[{"latitude": center_lat, "longitude": center_lon}],  # Your location
+        get_position=["longitude", "latitude"],
+        get_color="[0, 100, 255, 200]",  # Blue color for your location
+        get_radius=300,
+        pickable=True,
+    )
 
     # Render the deck.gl map
-    r = pdk.Deck(layers=[layer], initial_view_state=view_state, tooltip={"text": "{name} ({stars} stars)"})
+    r = pdk.Deck(layers=[layer,my_location_layer], initial_view_state=view_state, tooltip={"text": "{name} ({stars} stars)"})
     return r
 
 def main():
