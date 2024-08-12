@@ -107,8 +107,11 @@ def main():
         st.title("Below are the hotels:")
         nearby_hotels = hotels_w[hotels_w.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']) <= radius_km, axis=1)]
         nearby_hotels['distance_km'] = nearby_hotels.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']), axis=1)
+        limited_h = nearby_hotels.head(50)
+        st.title("Map location the hotels:")
+        st.pydeck_chart(create_pydeck_map(limited_h, lat, lon))
         display_hotels(nearby_hotels.head(50))  # display only 50 hotels
-        st.pydeck_chart(create_pydeck_map(nearby_hotels, lat, lon))
+        
         filtered_restaurants = restaurants[restaurants['categories'].str.contains(cuisine_type, case=False, na=False)]
         filtered_restaurants['distance_km'] = filtered_restaurants.apply(
     lambda row: haversine(lat, lon, row['latitude'], row['longitude']) <= radius_km, axis=1)
@@ -117,6 +120,9 @@ def main():
         st.write("\n")
         
         st.title("Below are the restaurants:")
+         st.title("Map location the restaurants:")
+        limited_restaurants = filtered_restaurants.head(50)
+        st.pydeck_chart(create_pydeck_map( limited_restaurants, lat, lon))
         display_restaurants(filtered_restaurants.head(50))
 
 if __name__ == "__main__":
