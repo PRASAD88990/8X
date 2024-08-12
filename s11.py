@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import json
 import pandas as pd
+from math import radians, sin, cos, sqrt, atan2
 
 @st.cache(ttl=3600)  # cache for 1 hour
 def download_json_data(url, filename):
