@@ -131,7 +131,7 @@ def main():
         
         st.title("Below are the restaurants:")
         st.title("Map location the restaurants:")
-         st.title("your location is shown by blue dot:")
+        st.title("your location is shown by blue dot:")
         limited_restaurants = filtered_restaurants.head(50)
         st.pydeck_chart(create_pydeck_map( limited_restaurants, lat, lon))
         display_restaurants(filtered_restaurants.head(50))
