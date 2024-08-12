@@ -117,6 +117,7 @@ def main():
         nearby_hotels['distance_km'] = nearby_hotels.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']), axis=1)
         limited_h = nearby_hotels.head(50)
         st.title("Map location the hotels:")
+        st.title("your location is shown by blue dot:")
         st.pydeck_chart(create_pydeck_map(limited_h, lat, lon))
         display_hotels(nearby_hotels.head(50))  # display only 50 hotels
         
@@ -130,6 +131,7 @@ def main():
         
         st.title("Below are the restaurants:")
         st.title("Map location the restaurants:")
+         st.title("your location is shown by blue dot:")
         limited_restaurants = filtered_restaurants.head(50)
         st.pydeck_chart(create_pydeck_map( limited_restaurants, lat, lon))
         display_restaurants(filtered_restaurants.head(50))
