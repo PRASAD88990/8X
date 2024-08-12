@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import json
 import pandas as pd
+import pydeck as pdk
 from math import radians, sin, cos, sqrt, atan2
 
 @st.cache(ttl=3600)  # cache for 1 hour
@@ -37,6 +38,23 @@ def display_restaurants(restaurants):
         st.write(f"Rating: {row['stars']} stars")
         st.write(f"Distance: {row['distance_km']:.2f} km")
         st.write("-" * 40)
+
+def create_pydeck_map(restaurants, center_lat, center_lon):
+    view_state = pdk.ViewState(latitude=center_lat, longitude=center_lon, zoom=12)
+    
+    # Create the pydeck Layer with restaurant locations
+    layer = pdk.Layer(
+        "ScatterplotLayer",
+        data=restaurants,
+        get_position=["longitude", "latitude"],
+        get_color="[200, 30, 0, 160]",
+        get_radius=200,
+        pickable=True,
+    )
+
+    # Render the deck.gl map
+    r = pdk.Deck(layers=[layer], initial_view_state=view_state, tooltip={"text": "{name} ({stars} stars)"})
+    return r
 
 def main():
     url = "https://www.dropbox.com/scl/fi/9lzttqolt0ojmdiian81r/yelp_academic_dataset_business.json?rlkey=0xz2qnm491hudpfspdcfmr4uo&dl=1"
@@ -85,6 +103,7 @@ def main():
 
     if st.button("Search"):
         st.title("note: hotels or all types of cuisines may not be available at all places")
+        st.pydeck_chart(create_pydeck_map(nearby_restaurants, lat, lon))
         st.title("Below are the hotels:")
         nearby_hotels = hotels_w[hotels_w.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']) <= radius_km, axis=1)]
         nearby_hotels['distance_km'] = nearby_hotels.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']), axis=1)
