@@ -91,7 +91,6 @@ def main():
         filtered_restaurants = restaurants[restaurants['categories'].str.contains(cuisine_type, case=False, na=False)]
         filtered_restaurants['distance_km'] = filtered_restaurants.apply(
     lambda row: haversine(lat, lon, row['latitude'], row['longitude']) <= radius_km, axis=1)
-        )
         st.write("\n")
         st.write("-" * 50)
         st.write("\n")
