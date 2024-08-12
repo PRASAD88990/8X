@@ -80,6 +80,7 @@ def main():
     lon= -lon
     radius_km = st.slider("Search Radius (km)", 1, 20, 10)
     st.title("Restaurant Finder by Cuisine")
+    st.write("select type like Thai , Italian , Chinese, japanese")
     cuisine_type = st.text_input("Enter Cuisine Type", "Italian")
 
     if st.button("Search"):
