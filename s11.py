@@ -84,7 +84,8 @@ def main():
     cuisine_type = st.text_input("Enter Cuisine Type", "Italian")
 
     if st.button("Search"):
-        st.write("Below are the hotels:")
+        st.title("note: hotels or all types of cuisines may not be available at all places")
+        st.title("Below are the hotels:")
         nearby_hotels = hotels_w[hotels_w.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']) <= radius_km, axis=1)]
         nearby_hotels['distance_km'] = nearby_hotels.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']), axis=1)
         display_hotels(nearby_hotels.head(50))  # display only 50 hotels
@@ -94,9 +95,9 @@ def main():
         st.write("\n")
         st.write("-" * 50)
         st.write("\n")
-
-        st.write("Below are the restaurants:")
-        display_restaurants(nearby_hotels.head(50))
+        
+        st.title("Below are the restaurants:")
+        display_restaurants(filtered_restaurants.head(50))
 
 if __name__ == "__main__":
     main()
