@@ -70,7 +70,7 @@ def main():
         c = 2 * atan2(sqrt(a), sqrt(1 - a))
         return R * c
 
-    if st.button("take Sample location cordinates from here"):
+    if st.button("take Sample location cordinates from here or any coordinates of a location within any cities"):
         st.write("Kenner, LA: 29.9941° N, 90.2417° W New Orleans, LA: 29.9511° N, 90.0715° W Kennett Square, PA: 39.8465° N, 75.7113° W Tucson, AZ: 32.2226° N, 110.9747° W Saint Louis, MO: 38.6270° N, 90.1994° W Philadelphia, PA: 39.9526° N, 75.1652° W Nashville, TN: 36.1627° N, 86.7816° W Madeira Beach, FL: 27.7986° N, 82.7977° W Santa Barbara, CA: 34.4208° N, 119.6982° W Reno, NV: 39.5296° N, 119.8138° W Terra Ceia, FL: 27.5767° N, 82.5667° W  Spring Hill, TN: 35.7512° N, 86.9300° W Eagle, ID: 43.6951° N, 116.3548° W Tampa Bay, FL: 27.9642° N, 82.4526° W Bellmawr, NJ: 39.8676° N, 75.0943° W Indianapolis, IN: 39.7684° N, 86.1581° W  Tampa, FL: 27.9506° N, 82.4572° W Cahokia, IL: 38.5709° N, 90.1882° W Newark, DE: 39.6837° N, 75.7497° W Treasure Island, FL: 27.7697° N, 82.7687° W Lutz, FL: 28.1511° N, 82.4615° W  Berkeley, CA: 37.8715° N, 122.2730° W West Chester, PA: 39.9607° N, 75.6065° W Mount Holly, NJ: 39.9937° N, 74.7874° W Abington, PA: 40.1220° N, 75.1199° W Franklin, TN: 35.9251° N, 86.8689° W  Sparks, NV: 39.5349° N, 119.7527° W Deptford, NJ: 39.8312° N, 75.1199° W Whitestown, IN: 39.9970° N, 86.3450° W Smyrna, TN: 35.9820° N, 86.5186° W Saint Petersburg, FL: 27.7676° N, 82.6403° W  Columbus, OH: 39.9612° N, 82.9988° W")
 
     st.title("put your coordinates  here")
@@ -87,14 +87,16 @@ def main():
         nearby_hotels = hotels_w[hotels_w.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']) <= radius_km, axis=1)]
         nearby_hotels['distance_km'] = nearby_hotels.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']), axis=1)
         display_hotels(nearby_hotels.head(50))  # display only 50 hotels
-
+        filtered_restaurants = restaurants[restaurants['categories'].str.contains(cuisine_type, case=False, na=False)]
+        filtered_restaurants['distance_km'] = filtered_restaurants.apply(
+    lambda row: haversine(lat, lon, row['latitude'], row['longitude']) <= radius_km, axis=1)
+        )
         st.write("\n")
         st.write("-" * 50)
         st.write("\n")
 
         st.write("Below are the restaurants:")
-        for i in range(50):
-            st.write(f"Restaurant {i+1}")
+        display_restaurants(nearby_hotels.head(50))
 
 if __name__ == "__main__":
     main()
