@@ -103,11 +103,12 @@ def main():
 
     if st.button("Search"):
         st.title("note: hotels or all types of cuisines may not be available at all places")
-        st.pydeck_chart(create_pydeck_map(nearby_restaurants, lat, lon))
+        
         st.title("Below are the hotels:")
         nearby_hotels = hotels_w[hotels_w.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']) <= radius_km, axis=1)]
         nearby_hotels['distance_km'] = nearby_hotels.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']), axis=1)
         display_hotels(nearby_hotels.head(50))  # display only 50 hotels
+        st.pydeck_chart(create_pydeck_map(nearby_hotels, lat, lon))
         filtered_restaurants = restaurants[restaurants['categories'].str.contains(cuisine_type, case=False, na=False)]
         filtered_restaurants['distance_km'] = filtered_restaurants.apply(
     lambda row: haversine(lat, lon, row['latitude'], row['longitude']) <= radius_km, axis=1)
