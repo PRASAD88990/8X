@@ -73,19 +73,13 @@ def main():
     lat = st.number_input("Enter Latitude", value=36.1699)
     lon = st.number_input("Enter Longitude", value=-115.1398)
     radius_km = st.slider("Search Radius (km)", 1, 20, 10)
+    st.title("Restaurant Finder by Cuisine")
+    cuisine_type = st.text_input("Enter Cuisine Type", "Italian")
 
     if st.button("Search"):
         nearby_hotels = hotels_w[hotels_w.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']) <= radius_km, axis=1)]
         nearby_hotels['distance_km'] = nearby_hotels.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']), axis=1)
         display_hotels(nearby_hotels)
-
-    st.title("Restaurant Finder by Cuisine")
-    lat = st.number_input("Enter Latitude", value=36.1699)
-    lon = st.number_input("Enter Longitude", value=-115.1398)
-    radius_km = st.slider("Search Radius (km)", 1, 20, 10)
-    cuisine_type = st.text_input("Enter Cuisine Type", "Italian")
-
-    if st.button("Search"):
         filtered_restaurants = restaurants[restaurants['categories'].str.contains(cuisine_type, case=False, na=False)]
         filtered_restaurants['distance_km'] = filtered_restaurants.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']), axis=1)
         nearby_restaurants = filtered_restaurants[filtered_restaurants['distance_km'] <= radius_km]
